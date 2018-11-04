@@ -11,4 +11,5 @@ public:
     HTree::tree_ptr_t pop_tree();
 private:
     std::vector<HTree::tree_ptr_t> heap;
+    void heapify();
 };

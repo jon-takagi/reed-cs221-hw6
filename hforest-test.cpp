@@ -24,15 +24,15 @@ int main() {
     HTree::tree_ptr_t root2 = make_tree(args2,1);
 
     HTree::tree_ptr_t node00(new HTree(0,0));
-    HTree::tree_ptr_t node01(new HTree(1,0));
-    HTree::tree_ptr_t node02(new HTree(2,0));
-    HTree::tree_ptr_t node03(new HTree(3,0));
-    HTree::tree_ptr_t node04(new HTree(4,0));
-    HTree::tree_ptr_t node05(new HTree(5,0));
-    HTree::tree_ptr_t node06(new HTree(6,0));
-    HTree::tree_ptr_t node07(new HTree(7,0));
-    HTree::tree_ptr_t node08(new HTree(8,0));
-    HTree::tree_ptr_t node09(new HTree(9,0));
+    HTree::tree_ptr_t node01(new HTree(1,1));
+    HTree::tree_ptr_t node02(new HTree(2,2));
+    HTree::tree_ptr_t node03(new HTree(3,3));
+    HTree::tree_ptr_t node04(new HTree(4,4));
+    HTree::tree_ptr_t node05(new HTree(5,5));
+    HTree::tree_ptr_t node06(new HTree(6,6));
+    HTree::tree_ptr_t node07(new HTree(7,7));
+    HTree::tree_ptr_t node08(new HTree(8,8));
+    HTree::tree_ptr_t node09(new HTree(9,9));
 
     std::vector<HTree::tree_ptr_t> nodes {
         node00,
@@ -50,4 +50,13 @@ int main() {
     assert(forest.size() == 10);
     std::vector<HTree::tree_ptr_t> nodes2 {};
     HForest forest2(nodes2);
+    assert(forest2.size() == 0);
+
+    forest2.add_tree(root1);
+    forest2.add_tree(root2);
+    assert(forest2.size() == 2);
+
+    // std::cout << forest.pop_tree() -> get_key() << "\n";
+    assert(node09 == forest.pop_tree());
+    assert(node08 == forest.pop_tree());
 }
