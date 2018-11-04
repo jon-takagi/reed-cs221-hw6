@@ -4,8 +4,9 @@
  */
 
 #pragma once
-
 #include <memory>
+#include <utility>
+#include <vector>
 #include <list>
 
 class HTree {
@@ -31,7 +32,6 @@ class HTree {
         // Return a list of directions from root to a node of a given key.
         // Crashes (with an assert) if key not contained in this tree
         path_t path_to(int key) const;
-
         // void set_child(Direction d, tree_ptr_t child);
         // void set_key(int k);
         // void set_value(uint64_t v);
@@ -43,3 +43,6 @@ class HTree {
         tree_ptr_t left_;
         tree_ptr_t right_;
 };
+
+std::string direction_to_string(HTree::Direction);
+HTree::tree_ptr_t make_tree(std::vector<std::shared_ptr<std::pair<int,uint64_t>>> args,long unsigned int index);

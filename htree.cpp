@@ -1,5 +1,8 @@
 #include "htree.hh"
 #include <assert.h>
+#include <utility>
+#include <vector>
+#include <iostream>
 HTree::HTree(int key, uint64_t value, tree_ptr_t left, tree_ptr_t right){
     key_ = key;
     value_ = value;
@@ -13,7 +16,16 @@ HTree::~HTree(){
     // delete &right_;
 
 }
-
+std::string direction_to_string(HTree::Direction d){
+    switch(d) {
+        case HTree::Direction::LEFT :
+            return "LEFT";
+        case HTree::Direction::RIGHT:
+            return "RIGHT";
+        default:
+            return "?";
+    }
+}
 int HTree::get_key() const{
     return key_;
 }  // Return key in current node
@@ -68,4 +80,27 @@ bool HTree::contains_key(int key) const {
         get_key() == key ||
         (left_  && left_  -> contains_key(key)) ||
         (right_ && right_ -> contains_key(key));
+}
+HTree::tree_ptr_t make_tree(std::vector<std::shared_ptr<std::pair<int,uint64_t>>> args,long unsigned int index) {
+    if(args.at(index - 1)) {
+        int key = args.at(index - 1) -> first;
+        uint64_t value = args.at(index - 1) -> second;
+        HTree::tree_ptr_t left = nullptr;
+        HTree::tree_ptr_t right = nullptr;
+        if(2*index <= args.size()) {
+            left = make_tree(args, 2*index);
+        }
+        if(2*index + 1 <= args.size()) {
+            right = make_tree(args, 2*index+1);
+        }
+        HTree::tree_ptr_t root(new HTree(key,value,left,right));
+        return root;
+    } else {
+        if(index + 1 > args.size()) {
+            return nullptr;
+        } else {
+            make_tree(args, index + 1);
+        }
+    }
+    return nullptr;
 }
