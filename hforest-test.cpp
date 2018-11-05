@@ -14,14 +14,14 @@ int main() {
         nullptr,
         std::make_shared<std::pair<int,uint64_t>>(std::pair<int,uint64_t>(9,0))
     };
-    HTree::tree_ptr_t root1 = make_tree(args1,1);
+    HTree::tree_ptr_t root1 = make_tree(args1);
 
     std::vector<std::shared_ptr<std::pair<int,uint64_t>>> args2 {
         std::make_shared<std::pair<int,uint64_t>>(std::pair<int,uint64_t>(-5,0)),
         std::make_shared<std::pair<int,uint64_t>>(std::pair<int,uint64_t>(9,0)),
         std::make_shared<std::pair<int,uint64_t>>(std::pair<int,uint64_t>(12,0))
     };
-    HTree::tree_ptr_t root2 = make_tree(args2,1);
+    HTree::tree_ptr_t root2 = make_tree(args2);
 
     HTree::tree_ptr_t node00(new HTree(0,0));
     HTree::tree_ptr_t node01(new HTree(1,1));
@@ -56,7 +56,8 @@ int main() {
     forest2.add_tree(root2);
     assert(forest2.size() == 2);
 
-    // std::cout << forest.pop_tree() -> get_key() << "\n";
     assert(node09 == forest.pop_tree());
     assert(node08 == forest.pop_tree());
+
+    assert(forest.size() == 8);
 }

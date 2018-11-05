@@ -6,7 +6,7 @@ HForest::HForest(std::vector<HTree::tree_ptr_t> h) {
     this -> heapify();
 }
 HForest::~HForest() {
-
+    // delete &heap;
 }
 void HForest::heapify() {
     std::make_heap(this -> heap.begin(), this->heap.end(), compare_trees);

@@ -10,11 +10,6 @@ HTree::HTree(int key, uint64_t value, tree_ptr_t left, tree_ptr_t right){
     right_ = right;
 }
 HTree::~HTree(){
-    // delete &key_;
-    // delete &value_;
-    // delete &left_;
-    // delete &right_;
-
 }
 std::string direction_to_string(HTree::Direction d){
     switch(d) {
@@ -26,13 +21,15 @@ std::string direction_to_string(HTree::Direction d){
             return "?";
     }
 }
+// Return key in current node
 int HTree::get_key() const{
     return key_;
-}  // Return key in current node
+}
 
+// Return value in current node
 uint64_t HTree::get_value() const   {
     return value_;
-}  // Return value in current node
+}
 
 // Return the child of this node indicated by dir.
 // If the child is nullptr (current node is a leaf), returns nullptr.
@@ -65,33 +62,28 @@ HTree::path_t HTree::path_to(int key) const{
     }
     assert(false);
 }
-bool HTree::in_subtree(tree_ptr_t tree, int key) const {
-    return tree -> key_ == key || (tree -> left_ && in_subtree(tree->left_,key)) || (tree -> right_ && in_subtree(tree->right_,key));
-}
-// bool HTree::contains_key(int key) const {
-//     return
-//         this -> get_key() == key ||
-//         (this -> get_child(HTree::Direction::LEFT)  && this -> get_child(HTree::Direction::LEFT)  -> contains_key(key)) ||
-//         (this -> get_child(HTree::Direction::RIGHT) && this -> get_child(HTree::Direction::RIGHT) -> contains_key(key));
-// }
-
+//returns true if key is in the subtree rooted at `this`
 bool HTree::contains_key(int key) const {
     return
         get_key() == key ||
         (left_  && left_  -> contains_key(key)) ||
         (right_ && right_ -> contains_key(key));
 }
-HTree::tree_ptr_t make_tree(std::vector<std::shared_ptr<std::pair<int,uint64_t>>> args,long unsigned int index) {
+
+HTree::tree_ptr_t make_tree(std::vector<std::shared_ptr<std::pair<int,uint64_t>>> args){
+    return make_tree_helper(args, 1);
+}
+HTree::tree_ptr_t make_tree_helper(std::vector<std::shared_ptr<std::pair<int,uint64_t>>> args,long unsigned int index) {
     if(args.at(index - 1)) {
         int key = args.at(index - 1) -> first;
         uint64_t value = args.at(index - 1) -> second;
         HTree::tree_ptr_t left = nullptr;
         HTree::tree_ptr_t right = nullptr;
         if(2*index <= args.size()) {
-            left = make_tree(args, 2*index);
+            left = make_tree_helper(args, 2*index);
         }
         if(2*index + 1 <= args.size()) {
-            right = make_tree(args, 2*index+1);
+            right = make_tree_helper(args, 2*index+1);
         }
         HTree::tree_ptr_t root(new HTree(key,value,left,right));
         return root;
@@ -99,7 +91,7 @@ HTree::tree_ptr_t make_tree(std::vector<std::shared_ptr<std::pair<int,uint64_t>>
         if(index + 1 > args.size()) {
             return nullptr;
         } else {
-            make_tree(args, index + 1);
+            make_tree_helper(args, index + 1);
         }
     }
     return nullptr;

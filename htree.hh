@@ -37,7 +37,6 @@ class HTree {
         // void set_value(uint64_t v);
     private:
         bool contains_key(int key) const;
-        bool in_subtree(tree_ptr_t tree, int key) const;
         int key_;
         uint64_t value_;
         tree_ptr_t left_;
@@ -45,4 +44,9 @@ class HTree {
 };
 
 std::string direction_to_string(HTree::Direction);
-HTree::tree_ptr_t make_tree(std::vector<std::shared_ptr<std::pair<int,uint64_t>>> args,long unsigned int index);
+//takes a vector of pointers to key/value pairs
+//creates a tree using those pairs as if the vector was a heap
+//just calls the helper function with index=1
+//this is implementation hiding!
+HTree::tree_ptr_t make_tree(std::vector<std::shared_ptr<std::pair<int,uint64_t>>> args);
+HTree::tree_ptr_t make_tree_helper(std::vector<std::shared_ptr<std::pair<int,uint64_t>>> args,long unsigned int index = 1);
